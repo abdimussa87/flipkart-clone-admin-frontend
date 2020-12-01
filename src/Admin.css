@@ -1,0 +1,10 @@
+.admin {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  background-color: lightgray;
+  margin: 5rem;
+  padding: 3rem;
+  justify-content: center;
+  align-items: center;
+}

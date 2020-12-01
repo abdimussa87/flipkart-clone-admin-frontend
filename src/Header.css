@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  height: 30px;
+  justify-content: space-between;
+  flex: 0.5;
+  background-color: #003297;
+  color: white;
+  padding: 1rem;
+}
+
+.header__logo {
+  margin-left: 1rem;
+}
+.header__headerRight {
+  display: flex;
+  flex: 0.2;
+  /* justify-content: space-around; */
+}
+.header__headerOption {
+  margin-left: 2rem;
+}
+
+a:link,
+a:visited {
+  text-decoration: none;
+  color: white;
+}

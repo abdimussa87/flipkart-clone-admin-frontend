@@ -1,0 +1,33 @@
+.signin {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 90vh;
+}
+.signin > form > input {
+  width: 300px;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid lightgray;
+}
+.signin > form > h5 {
+  margin: 0.6rem 0;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.signin > form > p {
+  margin-top: 0.3rem;
+  font-size: small;
+}
+
+.signin > form > button {
+  margin-top: 0.6rem;
+  color: white;
+  background-color: #fb641b;
+}
+
+.signin > form > button:hover {
+  color: #fb641b;
+  background-color: white;
+}
