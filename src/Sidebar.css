@@ -1,0 +1,17 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 0.3;
+  border-right: 1px solid lightgray;
+  height: 91vh;
+}
+.sidebar__option {
+  padding: 1rem;
+  background-color: #f5f5f5;
+}
+
+.sidebar__option:hover {
+  cursor: pointer;
+  background-color: #3e93fd;
+  color: white;
+}
