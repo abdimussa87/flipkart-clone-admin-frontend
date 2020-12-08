@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Signin.css'
 import { Button } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { loginAsync } from './features/userSlice';
 function Signin() {
 
@@ -9,6 +9,7 @@ function Signin() {
     const [password, setPassword] = useState('');
 
     const dispatch = useDispatch();
+    const error = useSelector(state => state.user.error)
     const handleSignin = (e) => {
         e.preventDefault();
         if (email.trim().length > 0 && password.trim().length >= 6) {
@@ -29,6 +30,7 @@ function Signin() {
     return (
         <div className='signin'>
             <form >
+                {error && <p style={{ color: 'red' }}>{error.message || error.error}</p>}
                 <h5>Email Address</h5>
                 <input type="text" placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)} />
                 <p>We'll never share your email with anyone else</p>

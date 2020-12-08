@@ -21,6 +21,21 @@ export const loginAsync = createAsyncThunk('user/loginAsync', async ({ email, pa
 
 })
 
+export const signUpAsync = createAsyncThunk('user/singnUpAsync', async ({ firstName, lastName, email, password }, { rejectWithValue }) => {
+  try {
+    const response = await axios.post('/admin/signup', {
+      firstName, lastName, email, password
+    })
+    if (response.status === 201) {
+      const { message } = response.data;
+      return { message };
+    }
+
+  } catch (error) {
+    return rejectWithValue(error.response.data)
+  }
+})
+
 
 export const userSlice = createSlice({
   name: 'user',
@@ -29,7 +44,8 @@ export const userSlice = createSlice({
     token: null,
     authenticated: false,
     authenticating: false,
-    error: null
+    error: null,
+    message: null
   },
   reducers: {
     isUserLoggedIn: (state) => {
@@ -67,6 +83,19 @@ export const userSlice = createSlice({
     [loginAsync.rejected]: (state, action) => {
       state.authenticating = false;
       state.error = action.payload;
+    },
+    [signUpAsync.pending]: (state, action) => {
+      state.authenticating = true;
+    },
+    [signUpAsync.fulfilled]: (state, action) => {
+      state.message = action.payload.message
+      state.authenticating = false;
+      state.error = null;
+    },
+    [signUpAsync.rejected]: (state, action) => {
+      state.error = action.payload;
+      state.authenticating = false;
+
     },
   }
 });
