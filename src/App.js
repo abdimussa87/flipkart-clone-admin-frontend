@@ -1,25 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Admin from './Admin';
 import Signin from './Signin'
 import Signup from './Signup';
 import Header from './Header';
+import PrivateRoute from './HOC/PrivateRoute';
+import PublicRoute from './HOC/PublicRoute';
+import { isUserLoggedIn } from './features/userSlice';
+import { useSelector, useDispatch } from 'react-redux'
+
 function App() {
+
+  const authenticated = useSelector(state => state.user.authenticated);
+  const dispatch = useDispatch();
+  useEffect(() => {
+
+    if (!authenticated) {
+      dispatch(isUserLoggedIn())
+    }
+
+  }, [authenticated, dispatch])
   return (
     <div className="app">
       <Router>
         <Header />
         <Switch>
-          <Route path="/signin">
+          <PublicRoute path="/signin">
             <Signin />
-          </Route>
-          <Route path="/signup">
+          </PublicRoute>
+          <PublicRoute path="/signup">
             <Signup />
-          </Route>
-          <Route path="/">
+          </PublicRoute>
+          <PrivateRoute path="/">
             <Admin />
-          </Route>
+          </PrivateRoute>
         </Switch>
       </Router>
     </div>

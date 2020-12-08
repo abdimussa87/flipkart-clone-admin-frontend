@@ -1,19 +1,37 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { logout } from './features/userSlice'
 import './Header.css'
 function Header() {
+    const authenticated = useSelector(state => state.user.authenticated)
+
+    const dispatch = useDispatch();
+    const handleLogout = () => {
+        dispatch(logout());
+    }
     return (
         <div className='header'>
             <Link to='/'>
                 <h4 className='header__logo'>Admin Dashboard</h4>
             </Link>
             <div className="header__headerRight">
-                <Link to='/signin'>
-                    <h5 className='header__headerOption'>Sign In</h5>
-                </Link>
-                <Link to='/signup'>
-                    <h5 className="header__headerOption">Sign Up</h5>
-                </Link>
+                {!authenticated ?
+                    <>
+                        <Link to='/signin'>
+                            <h5 className='header__headerOption'>Sign In</h5>
+                        </Link>
+                        <Link to='/signup'>
+                            <h5 className="header__headerOption">Sign Up</h5>
+                        </Link>
+                    </>
+                    : <>
+                        <Link to='/signin'>
+                            <h5 className='header__headerOption' onClick={handleLogout}>Sign Out</h5>
+                        </Link>
+                    </>
+
+                }
             </div>
         </div>
     )

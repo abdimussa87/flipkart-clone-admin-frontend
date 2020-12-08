@@ -12,6 +12,7 @@ export const loginAsync = createAsyncThunk('user/loginAsync', async ({ email, pa
     if (response.status === 200) {
       const { user, token } = response.data;
       localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       return { user, token };
     }
   } catch (error) {
@@ -31,8 +32,24 @@ export const userSlice = createSlice({
     error: null
   },
   reducers: {
+    isUserLoggedIn: (state) => {
+      const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (token) {
+        state.user = user;
+        state.token = token;
+        state.authenticated = true;
+      } else {
+        state.token = null;
+        state.user = null;
+        state.authenticated = false;
+      }
+    },
     logout: (state) => {
       state.user = null;
+      state.user = null;
+      state.authenticated = false;
+      localStorage.clear();
     },
   },
   extraReducers: {
@@ -58,7 +75,7 @@ export const userSlice = createSlice({
 
 
 
-export const { login, logout } = userSlice.actions;
+export const { isUserLoggedIn, logout } = userSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This

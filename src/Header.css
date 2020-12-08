@@ -1,8 +1,7 @@
 .header {
   display: flex;
-  height: 30px;
+  height: fit-content;
   justify-content: space-between;
-  flex: 0.5;
   background-color: #003297;
   color: white;
   padding: 1rem;
@@ -13,8 +12,7 @@
 }
 .header__headerRight {
   display: flex;
-  flex: 0.2;
-  /* justify-content: space-around; */
+  margin-right: 1rem;
 }
 .header__headerOption {
   margin-left: 2rem;
