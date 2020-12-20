@@ -4,14 +4,21 @@
   flex: 0.3;
   border-right: 1px solid lightgray;
   height: 91vh;
+  background-color: #f5f5f5;
 }
 .sidebar__option {
-  padding: 1rem;
+  margin-left: 0.3rem;
+  padding: 0.6rem;
   background-color: #f5f5f5;
+  border-radius: 15px 0px 0px 15px;
 }
 
 .sidebar__option:hover {
   cursor: pointer;
+  /* background-color: #3e93fd; */
+  color: #3e93fd;
+}
+.active {
   background-color: #3e93fd;
-  color: white;
+  color: white !important;
 }

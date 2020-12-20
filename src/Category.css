@@ -1,0 +1,18 @@
+.category__header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.category__header > button {
+  background-color: orange;
+  color: white;
+}
+.category__header > button:hover {
+  color: white;
+  background-color: lightblue;
+}
+.category__body {
+  padding-top: 0.4rem;
+}

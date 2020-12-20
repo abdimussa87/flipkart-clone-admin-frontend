@@ -4,6 +4,7 @@ import Sidebar from './Sidebar'
 import { useDispatch, useSelector } from 'react-redux';
 import Orders from './Orders';
 import Products from './Products';
+import Category from './Category';
 function Admin() {
     const dispatch = useDispatch();
     const selectedSidebarOption = useSelector(state => state.app.selectedSidebarOption);
@@ -15,6 +16,8 @@ function Admin() {
                     <h3>Welcome to Admin Dashboard</h3>
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi accusantium aut esse temporibus ex ducimus reiciendis, aperiam quisquam error sequi. Assumenda animi culpa harum laboriosam iusto beatae libero aut facilis.;
                  </div>;
+            case 'category':
+                return <Category />
             case 'products':
                 return <Products />;
             case 'orders':

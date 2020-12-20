@@ -5,7 +5,7 @@
 .admin__body {
   height: fit-content;
   flex: 0.7;
-  background-color: lightgray;
+  /* background-color: lightgray; */
   /* margin: 5rem;
   padding: 3rem; */
 }
