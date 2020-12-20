@@ -20,12 +20,33 @@ export const createCategoryAsync = createAsyncThunk('/category/createCategoryAsy
     try {
 
         const response = await axios.post('/categories', form);
-        console.log(response);
+        return response.data;
 
     } catch (error) {
         return rejectWithValue(error.response.data);
     }
 });
+
+const buildUpdatedCategoriesList = (categories, newCategory) => {
+    let categoryList = []
+    console.log(newCategory);
+    for (let cat of categories) {
+        if (newCategory.parentId && cat.id === newCategory.parentId) {
+            console.log('found');
+            categoryList.push({
+                ...cat, children: buildUpdatedCategoriesList([...cat.children, {
+                    id: newCategory._id,
+                    name: newCategory.name, parentId: newCategory.parentId
+                }], newCategory)
+            })
+        } else {
+            categoryList.push(
+                { ...cat, children: cat.children && cat.children.length > 0 ? buildUpdatedCategoriesList(cat.children, newCategory) : [] }
+            );
+        }
+    }
+    return categoryList;
+}
 
 
 export const categorySlice = createSlice({
@@ -57,6 +78,7 @@ export const categorySlice = createSlice({
             state.loading = true;
         },
         [createCategoryAsync.fulfilled]: (state, action) => {
+            state.categories = buildUpdatedCategoriesList(state.categories, action.payload.category);
             state.loading = false;
             state.error = null;
         },
