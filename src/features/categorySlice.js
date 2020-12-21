@@ -28,9 +28,17 @@ export const createCategoryAsync = createAsyncThunk('/category/createCategoryAsy
 });
 
 const buildUpdatedCategoriesList = (categories, newCategory) => {
+    // if what we are adding is itself a parent
+    if (!newCategory.parentId) {
+        return [...categories, {
+            id: newCategory._id,
+            name: newCategory.name, slug: newCategory.slug,
+            children: []
+        }]
+    }
     let categoryList = []
     for (let cat of categories) {
-        if (newCategory.parentId && cat.id === newCategory.parentId) {
+        if (cat.id === newCategory.parentId) {
             categoryList.push({
                 ...cat, children: buildUpdatedCategoriesList([...cat.children, {
                     id: newCategory._id,

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 function Category() {
     const dispatch = useDispatch();
     // const [categories,setCategories] = useState([]);
-    const categories = useSelector(state => state.category.categories);
+    const categories = useSelector(state => state.app.categories);
 
     const [categoryName, setCategoryName] = useState('');
     const [parentCategoryId, setParentCategoryId] = useState('');
@@ -33,6 +33,9 @@ function Category() {
         form.append('parentId', parentCategoryId);
         form.append("categoryImage", categoryImage);
         dispatch(createCategoryAsync(form));
+        setCategoryName('');
+        setParentCategoryId('');
+        setCategoryImage('');
         setOpen(false);
     }
 

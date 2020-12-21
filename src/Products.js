@@ -17,8 +17,9 @@ const useStyles = makeStyles((theme) => ({
 //* component starts here
 function Products() {
     const classes = useStyles();
+    const products = useSelector(state => state.app.products)
     const [open, setOpen] = useState(false);
-    const categories = useSelector(state => state.category.categories);
+    const categories = useSelector(state => state.app.categories);
     const [productName, setProductName] = useState('');
     const [categoryId, setCategoryId] = useState('');
     const [productPictures, setProductPictures] = useState([]);
@@ -70,6 +71,8 @@ function Products() {
         return options;
     }
 
+
+
     return (
         <div className='products'>
             <div className="products__header">
@@ -77,10 +80,39 @@ function Products() {
                 <Button onClick={handleClickOpen}>Add</Button>
             </div>
             <div>
+                <div className="products__body">
+                    {products.length > 0 ? <div className='products__table' style={{ "overflowX": "auto" }}>
+                        <table>
+                            <thead>
+
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                {products.map((product, index) => (<tr key={product._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{product.name}</td>
+                                    <td>{product.price}</td>
+                                    <td>{product.quantity}</td>
+                                    <td>{product.description}</td>
+                                    <td>{product.category}</td>
+                                </tr>))}
+
+                            </tbody>
+                        </table>
+                    </div> : null}
+                </div>
 
                 <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"
                     maxWidth='xs' fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add New Category</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Add New Product</DialogTitle>
                     <DialogContent>
 
                         <TextField

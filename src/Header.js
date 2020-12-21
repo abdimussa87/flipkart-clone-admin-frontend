@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { setSelectedSidebarOption } from './features/appSlice'
 import { logout } from './features/userSlice'
 import './Header.css'
 function Header() {
@@ -13,7 +14,7 @@ function Header() {
     return (
         <div className='header'>
             <Link to='/'>
-                <h4 className='header__logo'>Admin Dashboard</h4>
+                <h4 className='header__logo' onClick={() => dispatch(setSelectedSidebarOption('home'))}>Admin Dashboard</h4>
             </Link>
             <div className="header__headerRight">
                 {!authenticated ?

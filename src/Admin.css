@@ -1,10 +1,12 @@
 .admin {
-  display: flex;
+  /* display: flex; */
+  padding-top: 3.39rem;
 }
 
 .admin__body {
   height: fit-content;
   flex: 0.7;
+  margin-left: 17rem;
   /* background-color: lightgray; */
   /* margin: 5rem;
   padding: 3rem; */

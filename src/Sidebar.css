@@ -3,13 +3,14 @@
   flex-direction: column;
   flex: 0.3;
   border-right: 1px solid lightgray;
-  height: 91vh;
+  height: 100vh;
+  position: fixed;
+  width: 16rem;
   background-color: #f5f5f5;
 }
 .sidebar__option {
   margin-left: 0.3rem;
   padding: 0.6rem;
-  background-color: #f5f5f5;
   border-radius: 15px 0px 0px 15px;
 }
 
