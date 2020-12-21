@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { createProductAsync } from './features/productSlice';
 import './Products.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,7 @@ function Products() {
     const [price, setPrice] = useState();
     const [description, setDescription] = useState('');
 
+    const dispatch = useDispatch();
 
     const handleAddClick = async () => {
         const form = new FormData();
@@ -36,7 +38,7 @@ function Products() {
         for (let picture of productPictures) {
             form.append("productPicture", picture);
         }
-        // dispatch(createCategoryAsync(form));
+        dispatch(createProductAsync(form));
         setOpen(false);
     }
 
