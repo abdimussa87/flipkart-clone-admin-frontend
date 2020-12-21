@@ -1,12 +1,11 @@
 import React from 'react'
 import './Admin.css'
 import Sidebar from './Sidebar'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Orders from './Orders';
 import Products from './Products';
 import Category from './Category';
 function Admin() {
-    const dispatch = useDispatch();
     const selectedSidebarOption = useSelector(state => state.app.selectedSidebarOption);
 
     const renderBody = (param) => {

@@ -9,6 +9,7 @@ import PrivateRoute from './HOC/PrivateRoute';
 import PublicRoute from './HOC/PublicRoute';
 import { isUserLoggedIn } from './features/userSlice';
 import { useSelector, useDispatch } from 'react-redux'
+import { fetchCategoriesAsync } from './features/categorySlice';
 
 function App() {
 
@@ -18,8 +19,9 @@ function App() {
 
     if (!authenticated) {
       dispatch(isUserLoggedIn())
+    } if (authenticated) {
+      dispatch(fetchCategoriesAsync({}));
     }
-
   }, [authenticated, dispatch])
   return (
     <div className="app">

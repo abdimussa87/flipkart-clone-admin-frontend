@@ -1,0 +1,18 @@
+.products__header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.products__header > button {
+  background-color: orange;
+  color: white;
+}
+.products__header > button:hover {
+  color: white;
+  background-color: lightblue;
+}
+.products__body {
+  padding-top: 0.4rem;
+}

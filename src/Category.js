@@ -1,8 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import './Category.css';
-import { createCategoryAsync, fetchCategoriesAsync } from './features/categorySlice';
+import { createCategoryAsync } from './features/categorySlice';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
+//* component starts here
 function Category() {
     const dispatch = useDispatch();
     // const [categories,setCategories] = useState([]);
@@ -26,9 +26,6 @@ function Category() {
     const classes = useStyles();
 
 
-    useEffect(() => {
-        dispatch(fetchCategoriesAsync({}));
-    }, [dispatch]);
 
     const handleAddClick = async () => {
         const form = new FormData();
@@ -39,7 +36,7 @@ function Category() {
         setOpen(false);
     }
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
