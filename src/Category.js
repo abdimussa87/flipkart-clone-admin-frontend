@@ -88,6 +88,60 @@ function Category() {
         return options;
     }
 
+    const renderAddCategoryModal = () => {
+        return <div>
+
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"
+                maxWidth='xs' fullWidth={true}>
+                <DialogTitle id="form-dialog-title">Add New Category</DialogTitle>
+                <DialogContent>
+
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Name"
+                        fullWidth
+                        value={categoryName}
+                        onChange={(e) => setCategoryName(e.target.value)}
+                    />
+                    <TextField
+                        type="file"
+                        margin="dense"
+                        id="categoryImage"
+                        fullWidth
+                        onChange={(e) => setCategoryImage(e.target.files[0])}
+                    />
+                    <div>
+                        <FormControl fullWidth={true} className={classes.formControl}>
+                            <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={parentCategoryId}
+                                onChange={handleChange}
+                            >
+                                {createSelectOptions(categories).map(option => <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>)}
+
+
+                            </Select>
+                        </FormControl>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} variant='contained'>
+                        Cancel
+  </Button>
+                    <Button variant='contained' onClick={handleAddClick} color="primary">
+                        Add
+  </Button>
+                </DialogActions>
+
+            </Dialog>
+
+        </div>
+    }
+
     return (
         <div className='category'>
             <div className="category__header">
@@ -104,58 +158,7 @@ function Category() {
 
                 </ul>
             </div>
-            <div>
-
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"
-                    maxWidth='xs' fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add New Category</DialogTitle>
-                    <DialogContent>
-
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Name"
-                            fullWidth
-                            value={categoryName}
-                            onChange={(e) => setCategoryName(e.target.value)}
-                        />
-                        <TextField
-                            type="file"
-                            margin="dense"
-                            id="categoryImage"
-                            fullWidth
-                            onChange={(e) => setCategoryImage(e.target.files[0])}
-                        />
-                        <div>
-                            <FormControl fullWidth={true} className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={parentCategoryId}
-                                    onChange={handleChange}
-                                >
-                                    {createSelectOptions(categories).map(option => <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>)}
-
-
-                                </Select>
-                            </FormControl>
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} variant='contained'>
-                            Cancel
-          </Button>
-                        <Button variant='contained' onClick={handleAddClick} color="primary">
-                            Add
-          </Button>
-                    </DialogActions>
-
-                </Dialog>
-
-
-            </div>
+            {renderAddCategoryModal()}
 
         </div>
     )

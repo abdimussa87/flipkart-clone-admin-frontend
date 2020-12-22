@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, makeStyles, MenuItem, Paper, Select, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { createProductAsync } from './features/productSlice';
@@ -19,6 +19,7 @@ function Products() {
     const classes = useStyles();
     const products = useSelector(state => state.app.products)
     const [open, setOpen] = useState(false);
+    const [openProductDetail, setOpenProductDetail] = useState(false);
     const categories = useSelector(state => state.app.categories);
     const [productName, setProductName] = useState('');
     const [categoryId, setCategoryId] = useState('');
@@ -26,6 +27,7 @@ function Products() {
     const [quantity, setQuantity] = useState();
     const [price, setPrice] = useState();
     const [description, setDescription] = useState('');
+    const [productDetail, setProductDetail] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -71,7 +73,145 @@ function Products() {
         return options;
     }
 
+    const renderAddProductModal = () => {
+        return <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"
+            maxWidth='xs' fullWidth={true}>
+            <DialogTitle id="form-dialog-title">Add New Product</DialogTitle>
+            <DialogContent>
 
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Name"
+                    fullWidth
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    label="Description"
+                    id="description"
+                    fullWidth
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    id="quantity"
+                    label="Quantity"
+                    fullWidth
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                />
+                <TextField
+                    margin="dense"
+                    id="price"
+                    label="Price"
+                    fullWidth
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                />
+                <TextField
+                    type="file"
+                    margin="dense"
+                    id="productPictures"
+                    fullWidth
+                    onChange={(e) =>
+                        setProductPictures([...productPictures, e.target.files[0]])}
+                />
+                {productPictures.length > 0 ? productPictures.map((pic, index) => <div key={index}>{pic.name}</div>) : null}
+                <div>
+                    <FormControl fullWidth={true} className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={categoryId}
+                            onChange={handleChange}
+                        >
+                            {createSelectOptions(categories).map(option => <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>)}
+
+
+                        </Select>
+                    </FormControl>
+                </div>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} variant='contained'>
+                    Cancel
+                </Button>
+                <Button variant='contained' onClick={handleAddClick} color="primary">
+                    Add
+                </Button>
+            </DialogActions>
+
+        </Dialog>
+    };
+
+    const handleCloseProductDetailModal = () => {
+        setOpenProductDetail(false);
+    }
+
+    const showProductDetail = (product) => {
+        setProductDetail(product);
+        setOpenProductDetail(true);
+    }
+
+
+    const renderProductDetailModal = () => {
+        if (!productDetail) {
+            return null;
+        }
+        return <Dialog open={openProductDetail} onClose={handleCloseProductDetailModal} aria-labelledby="form-dialog-title"
+            maxWidth='md' fullWidth={true}>
+            <DialogTitle id="form-dialog-title">Product Details</DialogTitle>
+            <DialogContent>
+
+                <Paper >
+                    <Grid container style={{ padding: 20 }} >
+                        <Grid item xs={6}>
+                            <label className="products__label" > Name</label>
+                            <p className='products__value'>{productDetail.name}</p>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <label className="products__label" > Price</label>
+                            <p className='products__value'>{productDetail.price}</p>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <label className="products__label" > Quantity</label>
+                            <p className='products__value'>{productDetail.quantity}</p>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <label className="products__label" > Category</label>
+                            <p className='products__value'>{productDetail.category.name}</p>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <label className="products__label" > Description</label>
+                            <p className='products__value'>{productDetail.description}</p>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <label className="products__label" > Product Pictures</label>
+                            <div className='products__images'>
+                                {
+                                    productDetail.productPictures.map(pic => {
+                                        return <img key={pic._id} src={`http://localhost:8080/public/${pic.img}`} alt="" />
+                                    })
+                                }
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Paper>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCloseProductDetailModal} variant='contained'>
+                    Close
+                </Button>
+
+            </DialogActions>
+
+        </Dialog>
+    }
 
     return (
         <div className='products'>
@@ -90,19 +230,17 @@ function Products() {
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
-                                    <th>Description</th>
                                     <th>Category</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                                {products.map((product, index) => (<tr key={product._id}>
+                                {products.map((product, index) => (<tr key={product._id} onClick={() => showProductDetail(product)}>
                                     <td>{index + 1}</td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
                                     <td>{product.quantity}</td>
-                                    <td>{product.description}</td>
-                                    <td>{product.category}</td>
+                                    <td>{product.category.name}</td>
                                 </tr>))}
 
                             </tbody>
@@ -110,80 +248,8 @@ function Products() {
                     </div> : null}
                 </div>
 
-                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"
-                    maxWidth='xs' fullWidth={true}>
-                    <DialogTitle id="form-dialog-title">Add New Product</DialogTitle>
-                    <DialogContent>
-
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Name"
-                            fullWidth
-                            value={productName}
-                            onChange={(e) => setProductName(e.target.value)}
-                        />
-                        <TextField
-                            margin="dense"
-                            label="Description"
-                            id="description"
-                            fullWidth
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                        <TextField
-                            margin="dense"
-                            id="quantity"
-                            label="Quantity"
-                            fullWidth
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
-                        />
-                        <TextField
-                            margin="dense"
-                            id="price"
-                            label="Price"
-                            fullWidth
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                        />
-                        <TextField
-                            type="file"
-                            margin="dense"
-                            id="productPictures"
-                            fullWidth
-                            onChange={(e) =>
-                                setProductPictures([...productPictures, e.target.files[0]])}
-                        />
-                        {productPictures.length > 0 ? productPictures.map((pic, index) => <div key={index}>{pic.name}</div>) : null}
-                        <div>
-                            <FormControl fullWidth={true} className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-label">Select Category</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={categoryId}
-                                    onChange={handleChange}
-                                >
-                                    {createSelectOptions(categories).map(option => <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>)}
-
-
-                                </Select>
-                            </FormControl>
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} variant='contained'>
-                            Cancel
-</Button>
-                        <Button variant='contained' onClick={handleAddClick} color="primary">
-                            Add
-</Button>
-                    </DialogActions>
-
-                </Dialog>
-
+                {renderAddProductModal()}
+                {renderProductDetailModal()}
 
             </div>
         </div>
