@@ -3,6 +3,11 @@
   justify-content: space-between;
   padding: 0.6rem;
   border-bottom: 1px solid lightgray;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 54px;
+  z-index: 999;
+  background-color: white;
 }
 
 .products__header > button {
