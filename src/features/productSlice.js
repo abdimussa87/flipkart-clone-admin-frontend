@@ -1,54 +1,49 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../axios'
 
-
 // creating thunk
-// export const fetchCategoriesAsync = createAsyncThunk('category/fetchCategoriesAsync', async ({ rejectWithValue }) => {
-//     try {
-//         const response = await axios.get('/categories');
-//         if (response.status === 200) {
-//             const categories = response.data;
-//             return categories;
-//         }
-//     } catch (error) {
-//         return rejectWithValue(error.response.data)
-//     }
+export const fetchProductsAsync = createAsyncThunk('product/fetchProductsAsync', async ({ rejectWithValue }) => {
+    try {
+        const response = await axios.get('/products');
+        if (response.status === 200) {
+            const products = response.data;
+            return products;
+        }
+    } catch (error) {
+        return rejectWithValue(error.response.data)
+    }
 
-// });
+});
 
-export const createProductAsync = createAsyncThunk('/product/createProductAsync', async (form, { rejectWithValue }) => {
+const generateOneWayCategoriesList = (categories, oneWayCategorieslist = []) => {
+    for (let cat of categories) {
+        oneWayCategorieslist.push({ id: cat.id, name: cat.name });
+        if (cat.children.length > 0) {
+            generateOneWayCategoriesList(cat.children, oneWayCategorieslist);
+        }
+    }
+    return oneWayCategorieslist;
+}
+
+
+
+export const createProductAsync = createAsyncThunk('/product/createProductAsync', async ({ form, categories }, { rejectWithValue }) => {
     try {
 
         const response = await axios.post('/products', form);
-        return response.data;
+        const oneWayCategoriesList = generateOneWayCategoriesList(categories);
+        return { product: response.data, categories: oneWayCategoriesList };
 
     } catch (error) {
         return rejectWithValue(error.response.data);
     }
 });
 
-// const buildUpdatedCategoriesList = (categories, newCategory) => {
-//     let categoryList = []
-//     for (let cat of categories) {
-//         if (newCategory.parentId && cat.id === newCategory.parentId) {
-//             categoryList.push({
-//                 ...cat, children: buildUpdatedCategoriesList([...cat.children, {
-//                     id: newCategory._id,
-//                     name: newCategory.name, slug: newCategory.slug, parentId: newCategory.parentId
-//                 }], newCategory)
-//             })
-//         } else {
-//             categoryList.push(
-//                 { ...cat, children: cat.children && cat.children.length > 0 ? buildUpdatedCategoriesList(cat.children, newCategory) : [] }
-//             );
-//         }
-//     }
-//     return categoryList;
-// }
+
 
 
 export const productSlice = createSlice({
-    name: 'Product',
+    name: 'product',
     initialState: {
         products: [],
         loading: false,
@@ -58,25 +53,29 @@ export const productSlice = createSlice({
     reducers: {
     },
     extraReducers: {
-        // [fetchCategoriesAsync.pending]: (state, action) => {
-        //     state.loading = true;
-        // },
-        // [fetchCategoriesAsync.fulfilled]: (state, action) => {
-
-        //     state.categories = action.payload;
-        //     state.loading = false;
-        //     state.error = null;
-
-        // },
-        // [fetchCategoriesAsync.rejected]: (state, action) => {
-        //     state.loading = false;
-        //     state.error = action.payload;
-        // },
+        [fetchProductsAsync.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [fetchProductsAsync.fulfilled]: (state, action) => {
+            state.products = action.payload;
+            state.loading = false;
+            state.error = null;
+        },
+        [fetchProductsAsync.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
         [createProductAsync.pending]: (state, action) => {
             state.loading = true;
         },
         [createProductAsync.fulfilled]: (state, action) => {
-            // state.categories = buildUpdatedCategoriesList(state.categories, action.payload.category);
+
+            const categories = action.payload.categories;
+            const category = categories.find(cat => cat.id === action.payload.product.product.category)
+            state.products = [...state.products, {
+                ...action.payload.product.product,
+                category: { _id: category.id, name: category.name }
+            }]
             state.loading = false;
             state.error = null;
         },

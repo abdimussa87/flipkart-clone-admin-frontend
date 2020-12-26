@@ -28,6 +28,9 @@ export const appSlice = createSlice({
         setSelectedSidebarOption: (state, action) => {
             state.selectedSidebarOption = action.payload
         },
+        addProduct: (state, action) => {
+            state.products = [...state.products, action.payload]
+        }
 
     },
     extraReducers: {
@@ -49,7 +52,7 @@ export const appSlice = createSlice({
 
 });
 
-export const { setSelectedSidebarOption } = appSlice.actions;
+export const { setSelectedSidebarOption, addProduct } = appSlice.actions;
 
 
 export const selectSelectedSidebarOption = state => state.app.selectedSidebarOption;

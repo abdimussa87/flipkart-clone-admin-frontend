@@ -9,7 +9,8 @@ import PrivateRoute from './HOC/PrivateRoute';
 import PublicRoute from './HOC/PublicRoute';
 import { isUserLoggedIn } from './features/userSlice';
 import { useSelector, useDispatch } from 'react-redux'
-import { getInitialDataAsync } from './features/appSlice';
+import { fetchCategoriesAsync } from './features/categorySlice';
+import { fetchProductsAsync } from './features/productSlice';
 
 function App() {
 
@@ -20,7 +21,8 @@ function App() {
     if (!authenticated) {
       dispatch(isUserLoggedIn())
     } if (authenticated) {
-      dispatch(getInitialDataAsync({}));
+      dispatch(fetchCategoriesAsync({}));
+      dispatch(fetchProductsAsync({}));
     }
   }, [authenticated, dispatch])
   return (

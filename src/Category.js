@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 function Category() {
     const dispatch = useDispatch();
     // const [categories,setCategories] = useState([]);
-    const categories = useSelector(state => state.app.categories);
+    const categories = useSelector(state => state.category.categories);
 
     const [categoryName, setCategoryName] = useState('');
     const [parentCategoryId, setParentCategoryId] = useState('');

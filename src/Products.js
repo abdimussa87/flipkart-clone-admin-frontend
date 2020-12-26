@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme) => ({
 //* component starts here
 function Products() {
     const classes = useStyles();
-    const products = useSelector(state => state.app.products)
+    const products = useSelector(state => state.product.products)
     const [open, setOpen] = useState(false);
     const [openProductDetail, setOpenProductDetail] = useState(false);
-    const categories = useSelector(state => state.app.categories);
+    const categories = useSelector(state => state.category.categories);
     const [productName, setProductName] = useState('');
     const [categoryId, setCategoryId] = useState('');
     const [productPictures, setProductPictures] = useState([]);
@@ -41,7 +41,7 @@ function Products() {
         for (let picture of productPictures) {
             form.append("productPicture", picture);
         }
-        dispatch(createProductAsync(form));
+        dispatch(createProductAsync({ form, categories }));
         setOpen(false);
     }
 
