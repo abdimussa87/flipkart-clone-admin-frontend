@@ -3,6 +3,13 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import './Category.css';
 import { createCategoryAsync } from './features/categorySlice';
+import CheckboxTree from 'react-checkbox-tree';
+import 'react-checkbox-tree/lib/react-checkbox-tree.css';
+
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { IoIosArrowDown, IoIosArrowForward, IoIosLocate } from "react-icons/io";
+import { CheckBoxOutlineBlankOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -23,6 +30,8 @@ function Category() {
     const [categoryName, setCategoryName] = useState('');
     const [parentCategoryId, setParentCategoryId] = useState('');
     const [categoryImage, setCategoryImage] = useState('');
+    const [checked, setChecked] = useState([]);
+    const [expanded, setExpanded] = useState([]);
     const classes = useStyles();
 
 
@@ -57,22 +66,13 @@ function Category() {
     const renderCategories = (categories) => {
         let newCategoryList = []
         for (let cat of categories) {
-            if (cat.children.length === 0) {
-                newCategoryList.push(
-                    <li key={cat.name}>
-                        {cat.name}
-                    </li>)
-            } else {
-                newCategoryList.push(
-
-                    <li key={cat.name}>{cat.name}
-                        <ul>
-                            {renderCategories(cat.children)}
-                        </ul>
-                    </li>
-
-                )
-            }
+            newCategoryList.push(
+                {
+                    label: cat.name,
+                    value: cat.id,
+                    children: cat.children.length > 0 && renderCategories(cat.children)
+                }
+            )
         }
         return newCategoryList;
 
@@ -149,14 +149,31 @@ function Category() {
                 <Button onClick={handleClickOpen}>Add</Button>
             </div>
             <div className="category__body">
-
-                <ul>
+                {/* <ul>
                     {
                         categories.length > 0 ?
                             renderCategories(categories)
                             : null}
 
-                </ul>
+                </ul> */}
+                <CheckboxTree
+                    nodes={renderCategories(categories)}
+                    checked={checked}
+                    expanded={expanded}
+                    onCheck={checked => setChecked(checked)}
+                    onExpand={expanded => setExpanded(expanded)}
+                    icons={{
+                        check: <CheckBoxIcon />,
+                        uncheck: <CheckBoxOutlineBlankOutlined />,
+                        expandClose: <IoIosArrowForward />,
+                        expandOpen: <IoIosArrowDown />,
+                        halfCheck: <CheckBoxOutlineBlankIcon />,
+                        parentClose: <IoIosLocate />,
+                        parentOpen: <IoIosLocate />,
+                        leaf: <IoIosLocate />
+                    }}
+                />
+
             </div>
             {renderAddCategoryModal()}
 
