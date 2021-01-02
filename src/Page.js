@@ -159,7 +159,7 @@ function Page() {
     return (
         <div className='page'>
             {renderCreatePageModal()}
-            {message && <Alert onClose={() => { dispatch(clearMessage()) }}>{message}</Alert>}
+            {message && (message === "Page created successfully" || message === "Page updated succesfully") && <Alert onClose={() => { dispatch(clearMessage()) }}>{message}</Alert>}
             <Button variant='outlined' onClick={() => setOpen(true)}>Create Page</Button>
         </div>
     )
