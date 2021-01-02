@@ -14,6 +14,7 @@ function Sidebar() {
             <h4 className={`sidebar__option ${selectedOption === 'home' ? "active" : ''}`} onClick={() => handleClick('home')}>Home</h4>
             <h4 className={`sidebar__option ${selectedOption === 'category' ? "active" : ''}`} onClick={() => handleClick('category')}>Category</h4>
             <h4 className={`sidebar__option ${selectedOption === 'products' ? "active" : ''}`} onClick={() => handleClick('products')}>Products</h4>
+            <h4 className={`sidebar__option ${selectedOption === 'page' ? "active" : ''}`} onClick={() => handleClick('page')}>Page</h4>
             <h4 className={`sidebar__option ${selectedOption === 'orders' ? "active" : ''}`} onClick={() => handleClick('orders')}>Orders</h4>
 
         </div>

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import Orders from './Orders';
 import Products from './Products';
 import Category from './Category';
+import Page from './Page';
 function Admin() {
     const selectedSidebarOption = useSelector(state => state.app.selectedSidebarOption);
 
@@ -19,6 +20,8 @@ function Admin() {
                 return <Category />
             case 'products':
                 return <Products />;
+            case 'page':
+                return <Page />;
             case 'orders':
                 return <Orders />
             default:
